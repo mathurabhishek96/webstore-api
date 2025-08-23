@@ -119,25 +119,22 @@ public class APICRUDTests {
 		  String url = "https://fakestoreapi.com/products";
 
 	        // JSON payloads as strings
-	        String product1 = """
-	        {
-	          "title": "Product 1",
-	          "price": 199.99,
-	          "description": "First product",
-	          "image": "https://i.pravatar.cc",
-	          "category": "electronics"
-	        }
-	        """;
+		  String product1 = "{\n" +
+				  "  \"title\": \"Product 1\",\n" +
+				  "  \"price\": 199.99,\n" +
+				  "  \"description\": \"First product\",\n" +
+				  "  \"image\": \"https://i.pravatar.cc\",\n" +
+				  "  \"category\": \"electronics\"\n" +
+				  "}";
 
-	        String product2 = """
-	        {
-	          "title": "Product 2",
-	          "price": 299.99,
-	          "description": "Second product",
-	          "image": "https://i.pravatar.cc",
-	          "category": "jewelery"
-	        }
-	        """;
+				  String product2 = "{\n" +
+				  "  \"title\": \"Product 2\",\n" +
+				  "  \"price\": 299.99,\n" +
+				  "  \"description\": \"Second product\",\n" +
+				  "  \"image\": \"https://i.pravatar.cc\",\n" +
+				  "  \"category\": \"jewelery\"\n" +
+				  "}";
+
 
 	        // Array of payloads
 	        String[] products = {product1, product2};
