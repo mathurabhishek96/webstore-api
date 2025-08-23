@@ -339,7 +339,7 @@ public class APICRUDTests {
 	            JSONObject jsondata = jsonarray.getJSONObject(i);
 	            int actualId = jsondata.getInt("id");
 	            String actualTitle = jsondata.getString("title");
-	            //double actualPrice = jsondata.getDouble("price");
+	            double actualPrice = jsondata.getDouble("price");
 
 	            // Print values
 	            System.out.println("CSV -> ID: " + expectedId + ", Title: " + expectedTitle + ", Price: " + expectedPrice);
