@@ -2,19 +2,19 @@
 <testng-results ignored="0" total="10" passed="9" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-08-23T23:34:46 BST" name="Suite" finished-at="2025-08-23T23:34:53 BST" duration-ms="6680">
+  <suite started-at="2025-08-23T23:55:42 BST" name="Suite" finished-at="2025-08-23T23:55:51 BST" duration-ms="9816">
     <groups>
     </groups>
-    <test started-at="2025-08-23T23:34:46 BST" name="API Tests" finished-at="2025-08-23T23:34:53 BST" duration-ms="6680">
+    <test started-at="2025-08-23T23:55:42 BST" name="API Tests" finished-at="2025-08-23T23:55:51 BST" duration-ms="9816">
       <class name="APItest1.APItest">
-        <test-method signature="testDataDrivenCSV()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:34:46 BST" name="testDataDrivenCSV" finished-at="2025-08-23T23:34:49 BST" duration-ms="2512" status="FAIL">
+        <test-method signature="testDataDrivenCSV()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:55:42 BST" name="testDataDrivenCSV" finished-at="2025-08-23T23:55:45 BST" duration-ms="3270" status="FAIL">
           <exception class="java.lang.AssertionError">
             <message>
               <![CDATA[Title mismatch at row 2]]>
             </message>
             <full-stacktrace>
               <![CDATA[java.lang.AssertionError: Title mismatch at row 2
-at APItest1.APICRUDTests.datadrivencsv(APICRUDTests.java:350)
+at APItest1.APICRUDTests.datadrivencsv(APICRUDTests.java:347)
 at APItest1.APItest.testDataDrivenCSV(APItest.java:57)
 at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 at java.base/java.lang.reflect.Method.invoke(Method.java:580)
@@ -48,39 +48,39 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testDataDrivenCSV -->
-        <test-method signature="testDelete()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:34:49 BST" name="testDelete" finished-at="2025-08-23T23:34:49 BST" duration-ms="382" status="PASS">
+        <test-method signature="testDelete()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:55:45 BST" name="testDelete" finished-at="2025-08-23T23:55:45 BST" duration-ms="377" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testDelete -->
-        <test-method signature="testDownloadFile()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:34:49 BST" name="testDownloadFile" finished-at="2025-08-23T23:34:50 BST" duration-ms="934" status="PASS">
+        <test-method signature="testDownloadFile()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:55:45 BST" name="testDownloadFile" finished-at="2025-08-23T23:55:46 BST" duration-ms="1196" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testDownloadFile -->
-        <test-method signature="testFileUploadDownload()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:34:50 BST" name="testFileUploadDownload" finished-at="2025-08-23T23:34:50 BST" duration-ms="233" status="PASS">
+        <test-method signature="testFileUploadDownload()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:55:46 BST" name="testFileUploadDownload" finished-at="2025-08-23T23:55:47 BST" duration-ms="589" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testFileUploadDownload -->
-        <test-method signature="testGet()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:34:50 BST" name="testGet" finished-at="2025-08-23T23:34:51 BST" duration-ms="1139" status="PASS">
+        <test-method signature="testGet()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:55:47 BST" name="testGet" finished-at="2025-08-23T23:55:49 BST" duration-ms="1467" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testGet -->
-        <test-method signature="testPagination()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:34:51 BST" name="testPagination" finished-at="2025-08-23T23:34:52 BST" duration-ms="281" status="PASS">
+        <test-method signature="testPagination()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:55:49 BST" name="testPagination" finished-at="2025-08-23T23:55:50 BST" duration-ms="979" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testPagination -->
-        <test-method signature="testPost()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:34:52 BST" name="testPost" finished-at="2025-08-23T23:34:52 BST" duration-ms="156" status="PASS">
+        <test-method signature="testPost()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:55:50 BST" name="testPost" finished-at="2025-08-23T23:55:50 BST" duration-ms="191" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testPost -->
-        <test-method signature="testPostTime()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:34:52 BST" name="testPostTime" finished-at="2025-08-23T23:34:52 BST" duration-ms="162" status="PASS">
+        <test-method signature="testPostTime()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:55:50 BST" name="testPostTime" finished-at="2025-08-23T23:55:50 BST" duration-ms="184" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testPostTime -->
-        <test-method signature="testPut()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:34:52 BST" name="testPut" finished-at="2025-08-23T23:34:52 BST" duration-ms="168" status="PASS">
+        <test-method signature="testPut()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:55:50 BST" name="testPut" finished-at="2025-08-23T23:55:50 BST" duration-ms="522" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testPut -->
-        <test-method signature="testSchema()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:34:52 BST" name="testSchema" finished-at="2025-08-23T23:34:53 BST" duration-ms="632" status="PASS">
+        <test-method signature="testSchema()[pri:0, instance:APItest1.APItest@22555ebf]" started-at="2025-08-23T23:55:50 BST" name="testSchema" finished-at="2025-08-23T23:55:51 BST" duration-ms="926" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testSchema -->
