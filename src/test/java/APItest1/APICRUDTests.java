@@ -342,7 +342,7 @@ public class APICRUDTests {
 	            double actualPrice = jsondata.getDouble("price");
 
 	            // Print values
-	            System.out.println("CSV -> ID: " + expectedId + ", Title: " + expectedTitle + ", Price: " + expectedPrice);
+	            System.out.println("CSVV -> ID: " + expectedId + ", Title: " + expectedTitle + ", Price: " + expectedPrice);
 	            System.out.println("API -> ID: " + actualId + ", Title: " + actualTitle + ", Price: " + actualPrice);
 
 	            // Assertions
