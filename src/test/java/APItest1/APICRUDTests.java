@@ -334,7 +334,7 @@ public class APICRUDTests {
 
 	            // JSON values
 	            JSONObject jsondata = jsonarray.getJSONObject(i);
-	            int actualId = jsondata.getInt("id1");
+	            int actualId = jsondata.getInt("id");
 	            String actualTitle = jsondata.getString("title");
 	            double actualPrice = jsondata.getDouble("price");
 
