@@ -26,7 +26,7 @@ public class APItest extends APICRUDTests {
 
     @Test
     public void testPostTime() throws Exception {
-        Posttime();
+        Post();
     }
 
     @Test
@@ -45,9 +45,9 @@ public class APItest extends APICRUDTests {
     }
 
 
+
     @Test
     public void testDataDrivenCSV() throws Exception {
         datadrivencsv();
     }
 }
-
