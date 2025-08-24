@@ -1,361 +1,219 @@
 package APItest1;
 
-import io.restassured.response.Response;
 import io.restassured.RestAssured;
-import static io.restassured.RestAssured.*;              // for given()
-import static io.restassured.module.jsv.JsonSchemaValidator.*;
-import static org.testng.Assert.assertEquals;
-
 import io.restassured.http.ContentType;
-import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static io.restassured.RestAssured.given;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
-import org.testng.annotations.Test;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import com.opencsv.CSVReader;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 
 public class APICRUDTests {
-	
-	 static String url = "https://fakestoreapi.com/products";
 
-	  public static void Get() {
-		  
-		  String url = "https://fakestoreapi.com/products";
-		  
-		  Response getResponse = RestAssured.get(url);
-		  
-		  System.out.println("GET Status Code: " + getResponse.getStatusCode());
-	        
-		  
-		     JsonPath jsonPath = getResponse.jsonPath();
-		     
-		    List<String> titles  = jsonPath.getList("title");
-		    
-		    for (String title : titles){
-		    	System.out.println(title);
-		    }
-		    
-		    System.out.println(getResponse.getBody().asPrettyString());
-		     
-		    
-		  
-		    
-		   
-	  }
-	  
-	  public static void Post()
-	  {
-	
-	  
-	  String payload = "{\n" +
-              "  \"title\": \"Test Product\",\n" +
-              "  \"price\": 29.99,\n" +
-              "  \"description\": \"This is a test product\",\n" +
-              "  \"image\": \"https://i.pravatar.cc\",\n" +
-              "  \"category\": \"electronics\"\n" +
-              "}";
-	  
-	  
-	  Response postResponse  = RestAssured.given().contentType(ContentType.JSON).body(payload).post(url);
-	  System.out.println("Status Code: " + postResponse.getStatusCode());
-	  System.out.println("Status Code: " + postResponse.time());
-	  System.out.println("Full Response:");
-	  System.out.println(postResponse.getBody().asPrettyString());
-			  }
-	  
-	  public static void Put() {
-		    String url = "https://fakestoreapi.com/products/1"; 
+    static String url = "https://fakestoreapi.com/products";
 
-		    String payload = "{\n" +
-		            "  \"title\": \"Test Product\",\n" +
-		            "  \"price\": 29.99\n" +
-		            "}";
+    // ------------------- GET -------------------
+    public static void Get() {
+        Response getResponse = RestAssured.get(url);
+        System.out.println("GET Status Code: " + getResponse.getStatusCode());
 
-		    Response putResponse = RestAssured
-		            .given()
-		            .contentType(ContentType.JSON)
-		            .body(payload)
-		            .put(url);
+        String responseBody = getResponse.getBody().asString();
+        if (!responseBody.trim().startsWith("{") && !responseBody.trim().startsWith("[")) {
+            throw new RuntimeException("Response is not valid JSON: " + responseBody);
+        }
 
-		    System.out.println("Status Code: " + putResponse.getStatusCode());
-		    System.out.println("Full Response:");
-		    System.out.println(putResponse.getBody().asPrettyString());
-		}
-	  
-	  
-	  public static void Delete()
-	  {
-		  String url = "https://fakestoreapi.com/products/1"; 
-		  
+        JsonPath jsonPath = getResponse.jsonPath();
+        List<String> titles = jsonPath.getList("title");
 
-		    Response delete = RestAssured
-		            .given()
-		            .contentType(ContentType.JSON)
-		            .delete(url);
-		    
-		    System.out.println("Status Code: " + delete.getStatusCode());
-	  }
-	  
-	  public static void map()
-	  {
-		  String url = "https://fakestoreapi.com/products";
+        for (String title : titles) {
+            System.out.println(title);
+        }
 
-	        // JSON payloads as strings
-		  String product1 = "{\n" +
-				  "  \"title\": \"Product 1\",\n" +
-				  "  \"price\": 199.99,\n" +
-				  "  \"description\": \"First product\",\n" +
-				  "  \"image\": \"https://i.pravatar.cc\",\n" +
-				  "  \"category\": \"electronics\"\n" +
-				  "}";
+        System.out.println(getResponse.getBody().asPrettyString());
+    }
 
-				  String product2 = "{\n" +
-				  "  \"title\": \"Product 2\",\n" +
-				  "  \"price\": 299.99,\n" +
-				  "  \"description\": \"Second product\",\n" +
-				  "  \"image\": \"https://i.pravatar.cc\",\n" +
-				  "  \"category\": \"jewelery\"\n" +
-				  "}";
+    // ------------------- POST -------------------
+    public static void Post() {
+        String payload = "{\n" +
+                "  \"title\": \"Test Product\",\n" +
+                "  \"price\": 29.99,\n" +
+                "  \"description\": \"This is a test product\",\n" +
+                "  \"image\": \"https://i.pravatar.cc\",\n" +
+                "  \"category\": \"electronics\"\n" +
+                "}";
 
+        Response postResponse = RestAssured.given().contentType(ContentType.JSON).body(payload).post(url);
+        System.out.println("Status Code: " + postResponse.getStatusCode());
+        System.out.println("Time: " + postResponse.time());
+        System.out.println(postResponse.getBody().asPrettyString());
+    }
 
-	        // Array of payloads
-	        String[] products = {product1, product2};
+    // ------------------- PUT -------------------
+    public static void Put() {
+        String putUrl = url + "/1";
+        String payload = "{\n  \"title\": \"Updated Product\",\n  \"price\": 39.99\n}";
 
-	        // Loop through each product and POST
-	        for (String product : products) {
-	            Response res = RestAssured.given()
-	            		
-	                    .contentType(ContentType.JSON)
-	                    .body(product)
-	                    .post(url);
+        Response putResponse = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .put(putUrl);
 
-	            System.out.println("POST Status Code: " + res.getStatusCode());
-	            System.out.println("Response Body:");
-	            System.out.println(res.getBody().asPrettyString());
-	            System.out.println("-------------------------");
-	        }
-	    }
-	  
-	  
-	  public static void schema()
-	  {
-		   String url = "https://fakestoreapi.com/products/1";
+        System.out.println("Status Code: " + putResponse.getStatusCode());
+        System.out.println(putResponse.getBody().asPrettyString());
+    }
 
-	        given()
-	        .when()
-	            .get(url)
-	        .then()
-	            .assertThat()
-	            .statusCode(200)
-	            .body(matchesJsonSchemaInClasspath("productSchema.json"));
+    // ------------------- DELETE -------------------
+    public static void Delete() {
+        String deleteUrl = url + "/1";
 
-	        System.out.println("Schema validation passed");
-		  
-		  
-	  }
-	  
-	  
-	  public static void Posttime()
-	  {
-	
-	  
-	  String payload = "{\n" +
-              "  \"title\": \"Test Product\",\n" +
-              "  \"price\": 29.99,\n" +
-              "  \"description\": \"This is a test product\",\n" +
-              "  \"image\": \"https://i.pravatar.cc\",\n" +
-              "  \"category\": \"electronics\"\n" +
-              "}";
-	  
-	  
-	  Response postResponse  = RestAssured.given().contentType(ContentType.JSON).body(payload).post(url);
-	  System.out.println("Status Code: " + postResponse.getStatusCode());
-	  System.out.println("Status Code: " + postResponse.time());
-	  System.out.println("Full Response:");
-	  System.out.println(postResponse.getBody().asPrettyString());
-			  }
-	  
-	  public static void PostTime() {
-		    String url = "https://fakestoreapi.com/products/1"; 
+        Response deleteResponse = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .delete(deleteUrl);
 
-		    String payload = "{\n" +
-		            "  \"title\": \"Test Product\",\n" +
-		            "  \"price\": 29.99\n" +
-		            "}";
+        System.out.println("Status Code: " + deleteResponse.getStatusCode());
+    }
 
-		    Response putResponse = RestAssured
-		            .given()
-		            .contentType(ContentType.JSON)
-		            .body(payload)
-		            .post(url);
+    // ------------------- Schema Validation -------------------
+    public static void schema() {
+        String schemaUrl = url + "/1";
 
-		    System.out.println("Time Response: " + putResponse.time());
-		    System.out.println("Full Response:");
-		}
-	  
-	  public static void pagination()
-	  {
-		  int page = 1;
-	        int limit = 20;
-	        String url = "https://fakestoreapi.com/products?page=" + page + "&limit=" + limit;
+        given()
+                .when()
+                .get(schemaUrl)
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("productSchema.json"));
 
-	        Response response = given()
-	                                .get(url)
-	                                .then()
-	                                .statusCode(200)
-	                                .extract().response();
+        System.out.println("Schema validation passed");
+    }
 
-	        JsonPath js = response.jsonPath();
+    // ------------------- Pagination -------------------
+    public static void pagination() {
+        Response response = given()
+                .get(url)
+                .then()
+                .statusCode(200)
+                .extract().response();
 
-	        // Validate number of items
-	        int itemsReturned = js.getList("$").size();  // assumes root is a list
-	        
-	        System.out.println("Items returned: " + itemsReturned);
+        JsonPath js = response.jsonPath();
+        int itemsReturned = js.getList("$").size();
+        System.out.println("Items returned: " + itemsReturned);
 
-	        if(itemsReturned <= limit) {
-	            System.out.println("Pagination OK for page " + page);
-	        } else {
-	            System.out.println("Pagination issue detected!");
-	        }
+        Assert.assertTrue(itemsReturned <= 20, "Pagination issue: more than 20 items");
 
-	        // Optional: print items
-	        System.out.println("Items:");
-	        System.out.println(response.asPrettyString());
-	  }
-	  
-	  
-	  public static void fileUploaddownload() {
-	        File file = new File("C:\\Users\\mathu\\OneDrive - Griffith College\\Documents\\filetest.txt");
-	        String url = "https://file.io";
+        System.out.println(response.asPrettyString());
+    }
 
-	        Response upload = RestAssured
-	                .given()
-	                .redirects().follow(true)
-	                .multiPart("file", file)
-	                .post(url);
+    // ------------------- File Upload / Download -------------------
+    public static void fileUploaddownload() {
+        File file = new File("src/test/resources/filetest.txt"); // relative path
+        String uploadUrl = "https://file.io";
 
-	        // Check status
-	        if(upload.getStatusCode() == 200) {
-	            System.out.println("Upload Successful!");
-	        } else {
-	            System.out.println("Upload Failed, Status: " + upload.getStatusCode());
-	        }
+        Response upload = RestAssured.given()
+                .redirects().follow(true)
+                .multiPart("file", file)
+                .post(uploadUrl);
 
-	        // Print full response as string (safe)
-	        String responseString = upload.getBody().asString();
-	        System.out.println("Full Response: " + responseString);
+        if (upload.getStatusCode() == 200) {
+            System.out.println("Upload Successful!");
+        } else {
+            System.out.println("Upload Failed, Status: " + upload.getStatusCode());
+        }
 
-	        // Only parse JSON if it looks like JSON
-	        if(responseString.trim().startsWith("{")) {
-	            try {
-	                String downloadLink = upload.jsonPath().getString("link");
-	                System.out.println("Download Link: " + downloadLink);
-	            } catch (Exception e) {
-	                System.out.println("Failed to parse JSON: " + e.getMessage());
-	            }
-	        } else {
-	            System.out.println("Response is not valid JSON, cannot extract link.");
-	        }
-	    }
-	  
-	  
-	  public static void downloadFile(String fileUrl, String savePath) {
-		  try {
-	            URL url = new URL(fileUrl);
-	            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-	            connection.setRequestMethod("GET");
-	            connection.setInstanceFollowRedirects(true);
-	            int responseCode = connection.getResponseCode();
+        String responseString = upload.getBody().asString();
+        System.out.println("Full Response: " + responseString);
 
-	            if (responseCode == HttpURLConnection.HTTP_OK) {
-	                try (InputStream in = connection.getInputStream();
-	                     FileOutputStream out = new FileOutputStream(savePath)) {
+        if (responseString.trim().startsWith("{")) {
+            try {
+                String downloadLink = upload.jsonPath().getString("link");
+                System.out.println("Download Link: " + downloadLink);
+            } catch (Exception e) {
+                System.out.println("Failed to parse JSON: " + e.getMessage());
+            }
+        }
+    }
 
-	                    byte[] buffer = new byte[8192]; // 8 KB buffer
-	                    int bytesRead;
-	                    while ((bytesRead = in.read(buffer)) != -1) {
-	                        out.write(buffer, 0, bytesRead);
-	                    }
-	                    System.out.println("File downloaded to: " + savePath);
-	                }
-	            } else {
-	                System.out.println("Failed. Server returned HTTP " + responseCode);
-	            }
-	            connection.disconnect();
-	        } catch (Exception e) {
-	            System.out.println("Download failed: " + e.getMessage());
-	        }
-	    }
+    public static void downloadFile(String fileUrl, String savePath) {
+        try {
+            URL urlObj = new URL(fileUrl);
+            HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setInstanceFollowRedirects(true);
+            int responseCode = connection.getResponseCode();
 
-	  
-	  public static void datadrivencsv() throws Exception {
-	        // 1️⃣ Read CSV
-	        CSVReader reader = new CSVReader(new FileReader(
-	                "C:\\Users\\mathu\\OneDrive - Griffith College\\Documents\\products.csv"));
-	        List<String[]> csvdata = reader.readAll();
-	        reader.close();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                try (InputStream in = connection.getInputStream();
+                     FileOutputStream out = new FileOutputStream(savePath)) {
 
-	        // Remove header
-	        csvdata.remove(0);
+                    byte[] buffer = new byte[8192]; // 8 KB buffer
+                    int bytesRead;
+                    while ((bytesRead = in.read(buffer)) != -1) {
+                        out.write(buffer, 0, bytesRead);
+                    }
+                    System.out.println("File downloaded to: " + savePath);
+                }
+            } else {
+                System.out.println("Failed. Server returned HTTP " + responseCode);
+            }
+            connection.disconnect();
+        } catch (Exception e) {
+            System.out.println("Download failed: " + e.getMessage());
+        }
+    }
 
-	        // 2️⃣ Call API
-	        String url = "https://fakestoreapi.com/products";
-	        Response getResponse = RestAssured.get(url);
-	        System.out.println("GET Status Code: " + getResponse.getStatusCode());
+    // ------------------- Data-Driven CSV -------------------
+    public static void datadrivencsv() throws Exception {
+        InputStream csvStream = APICRUDTests.class.getClassLoader().getResourceAsStream("products.csv");
+        if (csvStream == null) {
+            throw new FileNotFoundException("products.csv not found in resources folder");
+        }
 
-	        JSONArray jsonarray = new JSONArray(getResponse.getBody().asString());
+        CSVReader reader = new CSVReader(new InputStreamReader(csvStream));
+        List<String[]> csvdata = reader.readAll();
+        reader.close();
 
-	        // 3️⃣ Compare CSV with API
-	        for (int i = 0; i < csvdata.size(); i++) {
-	            String[] data = csvdata.get(i);
+        csvdata.remove(0); // remove header
 
-	            // Convert CSV values to proper types
-	            int expectedId = Integer.parseInt(data[0].trim());
-	            String expectedTitle = data[1].trim();
-	            double expectedPrice = Double.parseDouble(data[2].trim());
+        Response getResponse = RestAssured.get(url);
+        System.out.println("GET Status Code: " + getResponse.getStatusCode());
 
-	            // JSON values
-	            JSONObject jsondata = jsonarray.getJSONObject(i);
-	            int actualId = jsondata.getInt("id");
-	            String actualTitle = jsondata.getString("title");
-	            double actualPrice = jsondata.getDouble("price");
+        JSONArray jsonarray = new JSONArray(getResponse.getBody().asString());
 
-	            // Print values
-	            System.out.println("CSV -> ID: " + expectedId + ", Title: " + expectedTitle + ", Price: " + expectedPrice);
-	            System.out.println("API -> ID: " + actualId + ", Title: " + actualTitle + ", Price: " + actualPrice);
+        for (int i = 0; i < csvdata.size(); i++) {
+            String[] data = csvdata.get(i);
 
-	            // Assertions
-	            assert expectedId == actualId : "ID mismatch at row " + (i + 1);
-	            assert expectedTitle.equals(actualTitle) : "Title mismatch at row " + (i + 1);
-	            assert expectedPrice == actualPrice : "Price mismatch at row " + (i + 1);
+            int expectedId = Integer.parseInt(data[0].trim());
+            String expectedTitle = data[1].trim();
+            double expectedPrice = Double.parseDouble(data[2].trim());
 
-	            System.out.println("Row " + (i + 1) + " matched successfully \n");
-	        }
+            JSONObject jsondata = jsonarray.getJSONObject(i);
+            int actualId = jsondata.getInt("id");
+            String actualTitle = jsondata.getString("title");
+            double actualPrice = jsondata.getDouble("price");
 
-	        System.out.println("All rows matched with API successfully!");
-	    }
+            System.out.println("CSV -> ID: " + expectedId + ", Title: " + expectedTitle + ", Price: " + expectedPrice);
+            System.out.println("API -> ID: " + actualId + ", Title: " + actualTitle + ", Price: " + actualPrice);
 
-		     
-		  
-		  
-	  }
-	  
+            Assert.assertEquals(actualId, expectedId, "ID mismatch at row " + (i + 1));
+            Assert.assertEquals(actualTitle, expectedTitle, "Title mismatch at row " + (i + 1));
+            Assert.assertEquals(actualPrice, expectedPrice, "Price mismatch at row " + (i + 1));
 
+            System.out.println("Row " + (i + 1) + " matched successfully \n");
+        }
+
+        System.out.println("All rows matched with API successfully!");
+    }
+
+}
