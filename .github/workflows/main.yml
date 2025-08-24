@@ -1,0 +1,27 @@
+name: Java TestNG CI
+
+on:
+  push:
+    branches: [ '**' ]      # triggers on any branch
+  pull_request:
+    branches: [ '**' ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+run-name: 
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build with Maven
+        run: mvn clean install
+
+      - name: Run TestNG tests
+        run: mvn test
