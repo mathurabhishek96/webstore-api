@@ -44,16 +44,10 @@ public class APItest extends APICRUDTests {
         fileUploaddownload();
     }
 
-    @Test
-    public void testDownloadFile() throws Exception {
-        downloadFile(
-            "https://limewire.com/d/o4tdJ#c1Be8UBPb3",
-            "C:\\Users\\mathu\\OneDrive - Griffith College\\Documents\\test.pdf"
-        );
-    }
 
     @Test
     public void testDataDrivenCSV() throws Exception {
         datadrivencsv();
     }
 }
+
