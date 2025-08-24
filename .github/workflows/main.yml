@@ -26,8 +26,4 @@ jobs:
         run: |
           mvn test -q --fail-at-end | tee result.log | grep -iE "FAILURES|ERROR|Exception"
 
-      - name: Upload TestNG reports
-        uses: actions/upload-artifact@v3
-        with:
-          name: testng-results
-          path: target/surefire-reports/*.xml
+  
